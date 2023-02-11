@@ -1,0 +1,29 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "bento/ubuntu-20.04"
+  config.vm.provider "hyperv"
+
+
+  config.vm.provider "hyperv" do |hv|
+    hv.cpus = "8"
+    hv.vmname = "docker"
+    hv.maxmemory = 32000
+    hv.memory = 16000
+    hv.enable_enhanced_session_mode = true
+  end
+
+
+  config.vm.provision "network",type: "shell",  privileged: true, inline: <<-SHELL
+  echo 'network:' > /etc/netplan/02-netcfg.yaml
+  echo ' version: 2' >> /etc/netplan/02-netcfg.yaml
+  echo ' ethernets:' >> /etc/netplan/02-netcfg.yaml
+  echo '    eth1:' >> /etc/netplan/02-netcfg.yaml
+  echo '     dhcp4: false' >> /etc/netplan/02-netcfg.yaml
+  echo '     nameservers:' >> /etc/netplan/02-netcfg.yaml
+  echo '        addresses: [1.1.1.1, 8.8.8.8]' >> /etc/netplan/02-netcfg.yaml
+  echo '     addresses: [192.168.100.50/24]' >> /etc/netplan/02-netcfg.yaml
+  SHELL
+end

@@ -1,0 +1,9 @@
+cat  ~/m.yaml >>/etc/netplan/01-netcfg.yaml 
+cat > ~/m.yaml <<EOF
+    eth1:
+      dhcp4: false
+      nameservers:
+        addresses: [1.1.1.1, 8.8.8.8]
+      addresses: [192.168.100.10/24]
+EOF
+cat  ~/m.yaml >>/etc/netplan/01-netcfg.yaml 
